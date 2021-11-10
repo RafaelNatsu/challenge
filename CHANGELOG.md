@@ -1,0 +1,4 @@
+# Changelog
+O projeto foi idealizado para cumprir os requisitos do desafio da entrevista. E alem disso foi feita uma estrutura no banco de dados a qual possibilita: inserção de novos endereços de listas de IPs; possibilidade de controle de atualização de registros;
+Será feito o frontend em Reactjs, o backend em .Net e o banco de dados Mysql. Vale ressaltar que o autor não tem nenhuma ou pouquissimas expêriencias profissionais nas tecnologias descritas, entretanto está se interessando mais e mais ao conhecer melhor e buscando em se aprimorar nas mesmas, sendo assim o motivo para a escolha destas.
+Na implementação do backend, inicialmente, não esta sendo aplicada o design de software DDD, pela pouca experiência do autor.
