@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  app:
+    image: challenge
+    build:
+      context: ./App
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - mysql_database
+    networks:
+      - network-backend
+  mysql_database:
+    build:
+      context: .
+      dockerfile: /docker/dockerfile.mysql
+    volumes:
+      - "db_data:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_HOST=127.0.0.0
+      # - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      # - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=challenge
+      - TZ=America/Sao_Paulo
+      - socket= /var/run/mysqld/mysqld.sock
+    networks: 
+      - network-backend
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  network-backend:
+    driver: bridge
