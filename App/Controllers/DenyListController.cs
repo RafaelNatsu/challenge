@@ -21,7 +21,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<denylist>>> GetAllDenyList()
+        public async Task<ActionResult<IEnumerable<Denylist>>> GetAllDenyList()
         {
             return await _context.Denylists.ToListAsync();
         }

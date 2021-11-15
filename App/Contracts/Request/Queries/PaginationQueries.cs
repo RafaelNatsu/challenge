@@ -5,7 +5,7 @@ namespace App.Contracts.Queries
         public PaginationQueries()
         {
             PageNumber = 1;
-            PageSize = 200;
+            PageSize = 500;
         }
 
         public PaginationQueries(int pageNumber, int pageSize)

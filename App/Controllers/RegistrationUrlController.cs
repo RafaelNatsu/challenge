@@ -22,15 +22,15 @@ namespace App.Controllers
 
         // GET: api/RegistrationUrl
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<registration_url>>> GetRegistrationUrls()
+        public async Task<ActionResult<IEnumerable<RegistrationUrl>>> GetRegistrationUrls()
         {
             var value = await _context.RegistrationUrls.ToListAsync();
-            return Ok(new Response<List<registration_url>>(value));
+            return Ok(new Response<List<RegistrationUrl>>(value));
         }
 
         // GET: api/RegistrationUrl/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<registration_url>> Getregistration_url(int id)
+        public async Task<ActionResult<RegistrationUrl>> Getregistration_url(int id)
         {
             var registration_url = await _context.RegistrationUrls.FindAsync(id);
 
@@ -45,9 +45,9 @@ namespace App.Controllers
         // PUT: api/RegistrationUrl/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Putregistration_url(int id, registration_url registration_url)
+        public async Task<IActionResult> Putregistration_url(int id, RegistrationUrl registration_url)
         {
-            if (id != registration_url.id)
+            if (id != registration_url.Id)
             {
                 return BadRequest();
             }
@@ -76,12 +76,12 @@ namespace App.Controllers
         // POST: api/RegistrationUrl
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<registration_url>> Postregistration_url(registration_url registration_url)
+        public async Task<ActionResult<RegistrationUrl>> Postregistration_url(RegistrationUrl registration_url)
         {
             _context.RegistrationUrls.Add(registration_url);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Getregistration_url", new { id = registration_url.id }, registration_url);
+            return CreatedAtAction("Getregistration_url", new { id = registration_url.Id }, registration_url);
         }
 
         // DELETE: api/RegistrationUrl/5
@@ -102,7 +102,7 @@ namespace App.Controllers
 
         private bool registration_urlExists(int id)
         {
-            return _context.RegistrationUrls.Any(e => e.id == id);
+            return _context.RegistrationUrls.Any(e => e.Id == id);
         }
     }
 }

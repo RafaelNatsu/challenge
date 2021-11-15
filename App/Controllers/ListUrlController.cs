@@ -14,12 +14,12 @@ namespace App.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ListController : ControllerBase
+    public class ListUrlController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IUriService _uriService;
 
-        public ListController(AppDbContext context, IUriService uriService)
+        public ListUrlController(AppDbContext context, IUriService uriService)
         {
             _context = context;
             _uriService = uriService;
@@ -27,59 +27,46 @@ namespace App.Controllers
 
         // GET: api/List
         [HttpGet]
-        public async Task<ActionResult<List<list>>> GetLists([FromQuery] PaginationFilter filter )
+        public async Task<ActionResult<List<ListUrl>>> GetLists([FromQuery] PaginationFilter filter )
         {
             string route = Request.Path.Value;
             PaginationFilter validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
             var pageDate = await _context.Lists
+                .OrderBy(x => x.Id)
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                 .Take(validFilter.PageSize)
                 .ToListAsync();
             var totalRecords = await _context.Lists.CountAsync();
-            var pageResponse = PaginationHelper.CreatePagedReponse<list>(pageDate,validFilter,totalRecords,_uriService,route);
+            var pageResponse = PaginationHelper.CreatePagedReponse<ListUrl>(pageDate,validFilter,totalRecords,_uriService,route);
             return Ok(pageResponse);
         }
         
-        // [HttpGet("/teste/")]
-        // public async Task<IActionResult> testeQuery([FromQuery] PaginationFilter filter )
-        // {
-        //     string route = Request.Path.Value;
-        //     PaginationFilter validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
-        //     var pageDate = await _context.Lists
-        //                                 .Skip((validFilter.PageNumber - 1) * validFilter.PageNumber)
-        //                                 .Take(validFilter.PageSize)
-        //                                 .OrderBy(l => l.id)
-        //                                 .ToListAsync();
-        //     var totalRecords = await _context.Lists.CountAsync();
-        //     var pageResponse = PaginationHelper.CreatePagedReponse<list>(pageDate,validFilter,totalRecords,_uriService,route);
-        //     return Ok(pageResponse);
-        // }
         // GET: api/List/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<list>> Getlist(int id)
+        public async Task<ActionResult<ListUrl>> Getlist(int id)
         {
             var route = Request.Path.Value;
-            var list = await _context.Lists.Where(l => l.id == id).FirstOrDefaultAsync();
+            var list = await _context.Lists.Where(l => l.Id == id).FirstOrDefaultAsync();
 
             if (list == null)
             {
                 return NotFound();
             }
 
-            return Ok(new Response<list>(list));
+            return Ok(new Response<ListUrl>(list));
         }
 
         // PUT: api/List/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Putlist(int id, list list)
+        public async Task<IActionResult> Putlist(int id, ListUrl listUrl)
         {
-            if (id != list.id)
+            if (id != listUrl.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(list).State = EntityState.Modified;
+            _context.Entry(listUrl).State = EntityState.Modified;
 
             try
             {
@@ -103,12 +90,12 @@ namespace App.Controllers
         // POST: api/List
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<list>> Postlist(list list)
+        public async Task<ActionResult<ListUrl>> Postlist(ListUrl listUrl)
         {
-            _context.Lists.Add(list);
+            _context.Lists.Add(listUrl);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Getlist", new { id = list.id }, list);
+            return CreatedAtAction("Getlist", new { id = listUrl.Id }, listUrl);
         }
 
         // DELETE: api/List/5
@@ -129,7 +116,7 @@ namespace App.Controllers
 
         private bool listExists(int id)
         {
-            return _context.Lists.Any(e => e.id == id);
+            return _context.Lists.Any(e => e.Id == id);
         }
     }
 }

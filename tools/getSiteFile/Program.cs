@@ -10,8 +10,10 @@ namespace getSiteFile
         static void Main(string[] args)
         {
             
-            // var valuer = new DanMeTornodes();
-            // valuer.MakeInsertFile();
+            var valuer = new DanMeTornodes.DanMeTornodes();
+            valuer.MakeInsertFile();
+            var x = new Onionoo.Onionoo();
+            x.MakeInsertFile();
         }
     }
 }
