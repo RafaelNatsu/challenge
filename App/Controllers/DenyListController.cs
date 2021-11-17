@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.Models;
+using App.Contracts;
 
 namespace App.Controllers
 {
@@ -21,9 +22,29 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Denylist>>> GetAllDenyList()
+        public async Task<ActionResult<Response<List<Denylist>>>> GetAllDenyList()
         {
-            return await _context.Denylists.ToListAsync();
+            var query = await _context.Denylists
+                .FromSqlRaw(
+                    "SELECT d.id, l.ipAddress, d.IdRef, d.Inserted FROM DenyList d left join ListUrl l on l.Id = d.IdRef")
+                .ToListAsync();
+            return new Response<List<Denylist>>(query);
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult<Denylist>> Postlist(ListUrl raw)
+        {
+            // string[] keys = Request.Form.Keys.ToArray();
+            // Console.WriteLine(keys);
+            // Console.WriteLine(raw);
+            var value = new Denylist();
+            var get = _context.Lists.Where(x => x.IpAddress == raw.IpAddress).FirstOrDefault();
+            // Console.WriteLine(get);
+            value.IdRef = get.Id;
+            _context.Denylists.Add(value);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAllDenyList", new { id = value.IdRef }, value);
         }
     }
 }

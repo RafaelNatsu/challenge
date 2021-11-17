@@ -20,11 +20,12 @@ namespace getSiteFile.Onionoo
             }
             try
             {
+                // Uri uri = new Uri(url);
                 string file = File.ReadAllText(this.path);
                 Root root = JsonSerializer.Deserialize<Root>(file);
                 
                 FileStream fileStream = File.Create("./temp/onionoo.clean.sql");
-                string formated = $"INSERT INTO RegistrationUrl (PathUrl) VALUES('{this.url}');\n";
+                string formated = $"INSERT INTO RegistrationUrl (PathUrl) VALUES(\"{this.url}\");\n";
                 byte[] info = new UTF8Encoding(true).GetBytes(formated);
                 fileStream.Write(info,0,info.Length);
 

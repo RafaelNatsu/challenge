@@ -59,7 +59,7 @@ namespace App
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "App v1"));
 
             // app.UseHttpsRedirection();
-
+            app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseRouting();
 
             app.UseAuthorization();

@@ -10,7 +10,7 @@ CREATE TABLE `RegistrationUrl`(
     `DateAdd` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `DateUpdated` DATETIME DEFAULT NULL,
     `Cooldown` DATETIME DEFAULT NULL
-)ENGINE=InnoDB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `ListUrl` (
@@ -31,17 +31,17 @@ CREATE TABLE `ListUrl` (
     CONSTRAINT fk_Id_RegistrationUrl
     FOREIGN KEY (IdRegistrationUrl)
         REFERENCES RegistrationUrl(Id) 
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
     -- UNIQUE(IpAddress)
-)ENGINE=InnoDB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `DenyList` (
 	`Id` INT AUTO_INCREMENT PRIMARY KEY,
     `IdRef` INT,
     `Inserted` DATETIME DEFAULT CURRENT_TIMESTAMP,
-
+    UNIQUE (IdRef),
     CONSTRAINT fk_Id_Ref
     FOREIGN KEY (IdRef)
         REFERENCES ListUrl(Id) 
         ON DELETE CASCADE
-)ENGINE=InnoDB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

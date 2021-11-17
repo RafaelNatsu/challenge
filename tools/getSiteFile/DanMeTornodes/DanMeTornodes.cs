@@ -23,6 +23,7 @@ namespace getSiteFile.DanMeTornodes
             GetHtml();
             try
             {
+                // Uri uri = new Uri(this.url);
                 StreamReader streamReader = File.OpenText(path);
                 FileStream fileStream = File.Create("./temp/tornode.clean.sql");
                 string clean = "";
@@ -35,7 +36,7 @@ namespace getSiteFile.DanMeTornodes
                     if(clean == "<!-- __BEGIN_TOR_NODE_LIST__ //-->")
                     {
                         beginTag = true;
-                        string formated = $"INSERT INTO RegistrationUrl (PathUrl) VALUES('{url}');\n";
+                        string formated = $"INSERT INTO RegistrationUrl (PathUrl) VALUES(\"{this.url}\");\n";
                         byte[] info = new UTF8Encoding(true).GetBytes(formated);
                         fileStream.Write(info,0,info.Length);
                     }
@@ -52,7 +53,7 @@ namespace getSiteFile.DanMeTornodes
                             string[] values = clean.Split('|');
                             string type = (rgx.regex().IsMatch(values[0].ToString()))?"IPV4":"IPV6";
                             //TODO: adicionar remoção de possiveis codigos maliciosos nos campos (js ou sql)
-                            string formated = $"INSERT INTO `ListUrl` (`IdRegistrationUrl`, `IpAddress`, `Type`, `Name`, `Fingerprint`, `RouterPort`, `DirectoryPort`, `Flags`, `Uptime`, `Version`, `ContactInfo`) VALUES((SELECT Id FROM RegistrationUrl WHERE PathUrl = \"{url}\"), '{values[0]}', '{type}', '{values[1]}', '', {values[2]} ,{values[3]}, '{values[4]}', '{values[5]}', '{values[6]}', \"{values[7]}\" );\n";
+                            string formated = $"INSERT INTO `ListUrl` (`IdRegistrationUrl`, `IpAddress`, `Type`, `Name`, `Fingerprint`, `RouterPort`, `DirectoryPort`, `Flags`, `Uptime`, `Version`, `ContactInfo`) VALUES((SELECT Id FROM RegistrationUrl WHERE PathUrl = \"{this.url}\"), '{values[0]}', '{type}', '{values[1]}', '', {values[2]} ,{values[3]}, '{values[4]}', '{values[5]}', '{values[6]}', \"{values[7]}\" );\n";
                             byte[] info = new UTF8Encoding(true).GetBytes(formated);
                             fileStream.Write(info,0,info.Length);
                             count++;

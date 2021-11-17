@@ -31,13 +31,38 @@ namespace App.Controllers
         {
             string route = Request.Path.Value;
             PaginationFilter validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
-            var pageDate = await _context.Lists
-                .OrderBy(x => x.Id)
-                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)
+            int offset = (validFilter.PageNumber - 1) * validFilter.PageSize;
+            var query = await _context.Lists
+                .FromSqlRaw(
+                    $"SELECT * FROM ListUrl li LIMIT { validFilter.PageSize.ToString()} OFFSET {offset.ToString()}")
                 .ToListAsync();
-            var totalRecords = await _context.Lists.CountAsync();
-            var pageResponse = PaginationHelper.CreatePagedReponse<ListUrl>(pageDate,validFilter,totalRecords,_uriService,route);
+            // var pageDate = await _context.Lists
+            //     .OrderBy(x => x.Id)
+            //     .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            //     .Take(validFilter.PageSize)
+            //     .ToListAsync();
+            var totalRecords = await _context.Lists.FromSqlRaw("SELECT li.Id FROM ListUrl li WHERE li.Id NOT  IN ( select IdRef from DenyList )").CountAsync();
+            var pageResponse = PaginationHelper.CreatePagedReponse<ListUrl>(query,validFilter,totalRecords,_uriService,route);
+            return Ok(pageResponse);
+        }
+        
+        [HttpGet("deny/")]
+        public async Task<ActionResult<List<ListUrl>>> GetListsDeny([FromQuery] PaginationFilter filter )
+        {
+            string route = Request.Path.Value;
+            PaginationFilter validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
+            int offset = (validFilter.PageNumber - 1) * validFilter.PageSize;
+            var query = await _context.Lists
+                .FromSqlRaw(
+                    $"SELECT * FROM ListUrl li WHERE li.Id NOT  IN  ( select IdRef from DenyList ) LIMIT { validFilter.PageSize.ToString()} OFFSET {offset.ToString()}")
+                .ToListAsync();
+            // var pageDate = await _context.Lists
+            //     .OrderBy(x => x.Id)
+            //     .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            //     .Take(validFilter.PageSize)
+            //     .ToListAsync();
+            var totalRecords = await _context.Lists.FromSqlRaw("SELECT li.Id FROM ListUrl li WHERE li.Id NOT  IN ( select IdRef from DenyList )").CountAsync();
+            var pageResponse = PaginationHelper.CreatePagedReponse<ListUrl>(query,validFilter,totalRecords,_uriService,route);
             return Ok(pageResponse);
         }
         

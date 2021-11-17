@@ -7,17 +7,24 @@ services:
       context: ./App
       dockerfile: Dockerfile
     ports:
-      - 80:80
+      - 8080:80
     depends_on:
       - mysql_database
     networks:
       - network-backend
+  front:
+    build:
+      context: ./front/
+      dockerfile: ./dockerfile.react
+    ports:
+      - '80:3000'
   mysql_database:
     build:
       context: .
       dockerfile: /docker/dockerfile.mysql
     volumes:
       - "db_data:/var/lib/mysql"
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     ports:
       - "3306:3306"
     environment:

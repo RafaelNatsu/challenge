@@ -7,12 +7,12 @@ namespace App.Filters
         public PaginationFilter()
         {
             this.PageNumber = 1;
-            this.PageSize = 1000;
+            this.PageSize = 500;
         }
         public PaginationFilter(int pageNumber, int pageSize)
         {
             this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
-            this.PageSize = pageSize > 1000 ? 1000 : pageSize;
+            this.PageSize = pageSize > 500 ? 500 : pageSize;
         }
     }
 }
