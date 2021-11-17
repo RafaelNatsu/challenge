@@ -1,4 +1,10 @@
 # Changelog
-O projeto foi idealizado para cumprir os requisitos do desafio da entrevista. E alem disso foi feita uma estrutura no banco de dados a qual possibilita: inserção de novos endereços de listas de IPs; possibilidade de controle de atualização de registros;
-Será feito o frontend em Reactjs, o backend em .Net e o banco de dados Mysql. Vale ressaltar que o autor não tem nenhuma ou pouquissimas expêriencias profissionais nas tecnologias descritas, entretanto está se interessando mais e mais ao conhecer melhor e buscando em se aprimorar nas mesmas, sendo assim o motivo para a escolha destas.
-Na implementação do backend, inicialmente, não esta sendo aplicada o design de software DDD, pela pouca experiência do autor.
+
+Este projeto foi idealizado para completar o desafio proposto e adicionar possíveis "facilitadores"/funções/melhorias. É o primeiro projeto sério que fiz utilizando estas tecnologias, sendo assim tornando-se um projeto extremamente trabalhoso, porém de mesma forma, cativante.  
+
+A escolha das tecnologias utilizadas foi motivada majoritariamente pela minha preferência, entre tanto outro motivo que foi levado  tambem  em consideração, é o fato das mesmas terem uma presença notória no mercado de trabalho. 
+
+# Versões
+v0.1.0
+Implementado listagem com paginação para todos os resultados e para os com filtro, switch para exibir com ou sem os item removidos, textbox para remoção dos endereços e uma listagem dos id de endereços removidos.
+Criação ferramentas para inserção automatica dos endereços.
