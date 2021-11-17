@@ -10,6 +10,7 @@ const api = axios.create({
 const listReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_ITEM':
+      action.ItemName = action.ItemName.trim();
       api.post(`/Denylist`,{
         "IpAddress": action.ItemName
       },{headers: {"Access-Control-Allow-Origin": "*"}})
@@ -84,21 +85,18 @@ function App() {
 
   return (
       <Container>
-        <AddItem
-        name={ItemName}
-        onChange={handleChange}
-        onAdd={handleAdd}
-        />
-        <List list={listData.list} />
-        <br/>
         <h3>Tabela de endereços</h3>
-        <select onChange={limits}>
+        <p>quantidade por pagina:</p>
+        <select onChange={limits} title="quantidade por pagina">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
           <option value="100">100</option>
         </select>
-        <ToggleSwitch id="switch" checked={checked} onChange={checked => setChecked(checked)} />
+        <div>
+          <p title="yes: remove os itens listados na denylist">utiliza filtro:</p>
+          <ToggleSwitch id="switch" checked={checked} onChange={checked => setChecked(checked)} />
+        </div>
         <PTable>
           <thead>
           <tr>
@@ -123,7 +121,6 @@ function App() {
           </tbody>
         </PTable>
         <Pagination>
-          <div>Qtd {total}</div>
           <PaginationButton>
             {currentPage > 1 && (
                 <PaginationItem onClick={() => setCurrentPage(currentPage - 1)}>
@@ -146,6 +143,16 @@ function App() {
             )}
           </PaginationButton>
         </Pagination>
+        <p>Quantidade: {total}</p>
+        <hr/>
+        <h3>Remover endereço:</h3>
+        <AddItem
+        name={ItemName}
+        onChange={handleChange}
+        onAdd={handleAdd}
+        /><br/>
+        <h3>lista de removidos:</h3>
+        <List list={listData.list} />
       </Container>
   );
 }
